@@ -5,7 +5,7 @@ def _vectorize(arr):
     num = h*w
     return np.reshape(arr, (num))
 
-def pix2vec(im):
+def _pix2vec(im):
     pix = im.load()
     w,h = im.size
     arr = np.zeros((h,w))
@@ -15,7 +15,7 @@ def pix2vec(im):
     return _vectorize(arr)
 
 
-def vec2im(im, vec):
+def _vec2im(im, vec):
     w,h = im.size
     arr = np.reshape(vec, (h,w))
     for x in xrange(0, w):
