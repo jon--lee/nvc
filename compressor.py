@@ -60,7 +60,27 @@ class Compressor:
         self.net = net
 
 
-    def train(im, epochs, learning_rate):
+    def train(self, im, epochs, learning_rate):
+        training_set = self._compute_training_set(im)
+        self.net.train(training_set, epochs, learning_rate, mini_batch_size=5, monitor=True)
+        return self.net    
+
+
+    def forward(self, im):
+        training_set = self._compute_training_set(im)
+        output_vec = np.array([])
+        for x, y in training_set:
+            out = (self.net.forward(x).reshape((len(x))) * 255).astype(int)
+            output_vec = np.concatenate((output_vec, out))
+
+        im = self._vec2im(im, output_vec)
+        return im
+
+
+    def _compute_training_set(self, im):
+        vec = self._im2vec(im)
+        max_ = self.net.start.size
+
         vec = self._im2vec(im)
         max_ = self.net.start.size
 
@@ -71,19 +91,7 @@ class Compressor:
             for k in xrange(0, len(vec) / max_) ]
         training_set = [(tvec, tvec) for tvec in training_inputs]
 
-        net.train(training_set, epochs, learning_rate, mini_batch_size=5, monitor=True)
-        return net    
-
-
-    def forward(self, im):
-        output_vec = np.array([])
-        for x, y in training_set:
-            out = (net.forward(x).reshape((len(x))) * 255).astype(int)
-            output_vec = np.concatenate((output_vec, out))
-
-        im = self._vec2im(im, output_vec)
-        return im
-
+        return training_set
 
     def _vectorize(self, arr):
         h,w = arr.shape
