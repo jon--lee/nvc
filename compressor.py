@@ -93,12 +93,17 @@ class Compressor:
 
         return training_set
 
+    # given a 2d array (matrix) of pixel values, compute
+    # a long 1d vector form of the matrix 
+    # this is an old version of vectorize which converting
+    # matrices into vectors line by line, rather than in squares
     def _vectorize(self, arr):
         h,w = arr.shape
         num = h*w
         return np.reshape(arr, (num))
 
-
+    # given an image object, get the 2d array of pixel values,
+    # construct a long vector from that matrix and return it
     def _im2vec(self, im):
         pix = im.load()
         w,h = im.size
@@ -109,6 +114,9 @@ class Compressor:
         return self._vectorize(arr)
 
 
+    # given a long vector, convert the vector to a 2 matrix
+    # of appropriate withd and height and return it as an image
+    # object
     def _vec2im(self, im, vec):
         w,h = im.size
         arr = np.reshape(vec, (h,w))
@@ -116,4 +124,6 @@ class Compressor:
             for y in xrange(0, h):
                 im.putpixel((y, x), arr[y][x])
         return im
+
+        
 
