@@ -71,23 +71,22 @@ class CompressorBase:
 
 class Compressor:
 
-    def __init__(self, net):
-        self.net = net
+    def __init__(self, sizes):
+        self.net = neuralpy2.Network(sizes)
 
     def compress(self, im):
-        set_ = self._compute_set(im)
+        raise NotImplementedError
         
     def expand(self, vector):
         raise NotImplementedError
         
-    # --TODO--
-    # implement feature to train on multiple images, for loop is added, but training_set is just overwritten
+    
     def train(self, ims, epochs, learning_rate):
         training_set = []
         for im in ims:
             training_set += self._compute_set(im)
         self.net.train(training_set, epochs, learning_rate, mini_batch_size=5, monitor=True)
-        return self.net    
+        return self.net
 
 
     def forward(self, im):
