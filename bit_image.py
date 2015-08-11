@@ -1,7 +1,7 @@
 from PIL import Image
 import numpy as np
-im = Image.open('lena.bmp')
-im = im.resize((100, 100))
+im = Image.open('images/training/peppers.bmp')
+im = im.resize((50, 50))
 pix = im.load()
 w,h = im.size
 
@@ -15,7 +15,7 @@ for x in xrange(0, h):
         gray = pix[y,x]
         #gray = (r + g + b) /3
         if gray < quarter:
-            s+=""
+            s+=" "
         elif gray < quarter * 2:
             s+="-"
         elif gray < quarter * 3:

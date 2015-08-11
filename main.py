@@ -9,14 +9,15 @@ from PIL import Image
 # assume this is black and white so pixels are not
 # tuples of rgb values
 im = Image.open('images/training/lena.bmp')
+im2 = Image.open('images/training/peppers.bmp')
 net = neuralpy2.Network([64, 50, 64])
 com = compressor.Compressor(net)
 
-com.train(im, 20, .3)
+com.train([im, im2], 20, .3)
 
-im2 = Image.open('images/testing/flower.bmp')
-im2 = im2.convert('RGB').convert('P', palette=Image.ADAPTIVE)
-im2 = com.forward(im2)
+im_new = Image.open('images/testing/flower.bmp')
+im_new = im_new.convert('RGB').convert('P', palette=Image.ADAPTIVE)
+im_new = com.forward(im_new)
 
-im2.show()
-im2.save('images/products/lena_flower.bmp')
+im_new.show()
+im_new.save('images/products/flower-from-multiple.bmp')
